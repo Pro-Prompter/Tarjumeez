@@ -16,9 +16,9 @@ const meta = {
 const introdata = {
   title: "I’m Syed Salahuddin Ayubi",
   animated: {
-    first: "Professional Voice Over Artist",
-    second: "Broadcast-Quality Audio",
-    third: "Fast Turnarounds",
+    first: "Pro Voice Over Artist",
+    second: "Translator",
+    third: "Broadcast-Quality Audio",
   },
   description: "Hearing is Believing.",
   your_img_url: Image,
@@ -143,12 +143,11 @@ const contactConfig = {
   YOUR_USER_ID: "user_id",
 };
 
-const socialprofils = {
+const socialprofiles = {
   facebook: "https://www.facebook.com/salah.uddin.526438",
   instagram: "https://www.instagram.com/salahud_din_s",
   linkedin: "https://www.linkedin.com/in/salahud-din-53765286",
   twitter: "https://x.com/Ayubi4Ssa",
-  
 };
 
 export {
@@ -160,6 +159,6 @@ export {
   services,
   introdata,
   contactConfig,
-  socialprofils,
+  socialprofiles,
   logotext,
 };

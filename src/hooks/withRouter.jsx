@@ -1,3 +1,7 @@
+/**
+ * Professional Voice Over Portfolio for Syed Salahuddin Ayubi
+ * Built with React and WaveSurfer.js featuring an interactive waveform player and responsive dark/light themes
+ */
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 function withRouter(Component) {

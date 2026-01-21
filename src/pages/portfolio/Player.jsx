@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-const WaveformPlayer = ({ audioUrl, title, isPlaying, onPlayToggle, theme }) => {
+const Player = ({ audioUrl, title, isPlaying, onPlayToggle, theme }) => {
   const containerRef = useRef(null);
   const wavesurfer = useRef(null);
   const [isPlayingLocal, setIsPlayingLocal] = useState(false);
@@ -70,8 +70,18 @@ const WaveformPlayer = ({ audioUrl, title, isPlaying, onPlayToggle, theme }) => 
         wavesurfer.current.destroy();
       }
     };
-  }, [audioUrl, theme]); // Re-init on theme change to update colors
+  }, [audioUrl]); // Re-init only when audio source changes
 
+  useEffect(() => {
+    // Update WaveSurfer colors dynamically when theme changes without re-initializing
+    if (wavesurfer.current) {
+      wavesurfer.current.setOptions({
+        waveColor,
+        progressColor,
+        cursorColor,
+      });
+    }
+  }, [theme, waveColor, progressColor, cursorColor]);
   // Sync with external playing state (e.g. from parent managing one-at-a-time)
   useEffect(() => {
     if (wavesurfer.current) {
@@ -120,4 +130,4 @@ const WaveformPlayer = ({ audioUrl, title, isPlaying, onPlayToggle, theme }) => 
   );
 };
 
-export default WaveformPlayer;
+export default Player;

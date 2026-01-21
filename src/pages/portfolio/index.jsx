@@ -3,7 +3,7 @@ import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { dataportfolio, meta } from "../../content_option";
-import WaveformPlayer from "../../components/WaveformPlayer";
+import Player from "./Player";
 
 export const Portfolio = () => {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
@@ -56,7 +56,7 @@ export const Portfolio = () => {
               <Col key={i} lg="6" md="12" className="mb-4">
                 <Card className="h-100 audio-card shadow-sm border-0">
                   <Card.Body className="d-flex flex-column justify-content-center">
-                      <WaveformPlayer
+                      <Player
                         audioUrl={data.audio}
                         title={data.title}
                         isPlaying={currentlyPlaying === i}

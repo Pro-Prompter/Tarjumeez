@@ -73,7 +73,7 @@ This creates a `build` folder with static assets ready for deployment.
 **Sajawal Mirza**
 *(Pro-Prompter)*
 
-- **LinkedIn**: [Sajawal Mirza](https://www.linkedin.com/in/sajawal-mirza-53765286)
+- **LinkedIn**: [Sajawal Mirza](https://www.linkedin.com/in/sajawalmirza/)
 - **Email**: [mirzasajawal827@gmail.com](mailto:mirzasajawal827@gmail.com)
 
 ## 📄 License
