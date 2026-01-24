@@ -1,9 +1,9 @@
-import demoRoleplay from "./assets/audios/Roleplay (Urdu).wav";
-import demoTalaat from "./assets/audios/Talaat Audio Test.mp3";
-import demoIVR from "./assets/audios/URDU IVR.mp3";
-import demoConversation from "./assets/audios/محادثة عادية.mp3";
-import demoRenan from "./assets/audios/Demo_Renan.wav";
-import Image from "./assets/images/salahuddin.jpeg";
+const demoRoleplay = "/assets/audios/Roleplay (Urdu).mp3";
+const demoTalaat = "/assets/audios/Talaat Audio Test.mp3";
+const demoIVR = "/assets/audios/URDU IVR.mp3";
+const demoConversation = "/assets/audios/محادثة عادية.mp3";
+const demoRenan = "/assets/audios/Demo_Renan.mp3";
+const Image = "/assets/images/salahuddin.jpeg";
 
 const logotext = "Syed Salahuddin Ayubi";
 

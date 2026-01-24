@@ -1,131 +1,123 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-const Player = ({ audioUrl, title, isPlaying, onPlayToggle, theme }) => {
+// Simple hook to detect when element enters the viewport
+function useInView(ref, options) {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      options
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [ref, options]);
+
+  return inView;
+}
+
+const Player = ({ audioUrl, title, theme = "light" }) => {
   const containerRef = useRef(null);
-  const wavesurfer = useRef(null);
-  const [isPlayingLocal, setIsPlayingLocal] = useState(false);
+  const wavesurferRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
-  // Define colors based on theme
-  const waveColor = theme === "light" ? "#b0b0b0" : "#6c757d";
-  const progressColor = theme === "light" ? "#1a1a1a" : "#ffffff";
-  const cursorColor = theme === "light" ? "#1a1a1a" : "#ffffff";
+  // Whether the waveform container has scrolled into view
+  const isInView = useInView(containerRef, { threshold: 0.3 });
 
-  // Format time as MM:SS
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
+  // **Preload audio in background on mount**
   useEffect(() => {
-    if (!containerRef.current) return;
+    const audio = new Audio(audioUrl);
+    audio.preload = "auto";  // Hint to browser to download
+    audio.load();
+  }, [audioUrl]);
 
-    wavesurfer.current = WaveSurfer.create({
+  // Initialize WaveSurfer only when in view
+  useEffect(() => {
+    if (!isInView || wavesurferRef.current) return;
+
+    const waveColor = theme === "light" ? "#b0b0b0" : "#6c757d";
+    const progressColor = theme === "light" ? "#1a1a1a" : "#ffffff";
+    const cursorColor = theme === "light" ? "#1a1a1a" : "#ffffff";
+
+    const ws = WaveSurfer.create({
       container: containerRef.current,
-      waveColor: waveColor,
-      progressColor: progressColor,
-      cursorColor: cursorColor,
+      waveColor,
+      progressColor,
+      cursorColor,
       barWidth: 2,
-      barRadius: 3,
-      cursorWidth: 1,
       height: 60,
-      barGap: 3,
       responsive: true,
-      url: audioUrl, // Load audio directly
+      backend: "MediaElement", // uses HTML audio for playback
     });
 
-    wavesurfer.current.on("ready", () => {
-      setDuration(wavesurfer.current.getDuration());
+    wavesurferRef.current = ws;
+
+    // Load audio (this triggers an HTTP request — but browser cache should make it fast)
+    ws.load(audioUrl);
+
+    ws.on("ready", () => {
+      setDuration(ws.getDuration());
     });
 
-    wavesurfer.current.on("audioprocess", (time) => {
+    ws.on("audioprocess", (time) => {
       setCurrentTime(time);
     });
 
-    wavesurfer.current.on("timeupdate", (time) => {
-        setCurrentTime(time);
-    });
-
-    wavesurfer.current.on("finish", () => {
-      setIsPlayingLocal(false);
-      if (isPlaying && onPlayToggle) {
-          onPlayToggle(); // Notify parent to toggle off
-      }
-    });
-
-    wavesurfer.current.on('interaction', () => {
-        if (!isPlayingLocal) {
-             wavesurfer.current.play();
-             setIsPlayingLocal(true);
-             if (onPlayToggle) onPlayToggle();
-        }
+    ws.on("finish", () => {
+      setIsPlaying(false);
     });
 
     return () => {
-      if (wavesurfer.current) {
-        wavesurfer.current.destroy();
-      }
+      ws.destroy();
+      wavesurferRef.current = null;
     };
-  }, [audioUrl]); // Re-init only when audio source changes
+  }, [isInView, audioUrl, theme]);
 
-  useEffect(() => {
-    // Update WaveSurfer colors dynamically when theme changes without re-initializing
-    if (wavesurfer.current) {
-      wavesurfer.current.setOptions({
-        waveColor,
-        progressColor,
-        cursorColor,
-      });
-    }
-  }, [theme, waveColor, progressColor, cursorColor]);
-  // Sync with external playing state (e.g. from parent managing one-at-a-time)
-  useEffect(() => {
-    if (wavesurfer.current) {
-      if (isPlaying) {
-        wavesurfer.current.play();
-        setIsPlayingLocal(true);
-      } else {
-        wavesurfer.current.pause();
-        setIsPlayingLocal(false);
-      }
-    }
-  }, [isPlaying]);
+  const handlePlayPause = useCallback(() => {
+    const ws = wavesurferRef.current;
+    if (!ws) return;
+    ws.playPause();
+    setIsPlaying(ws.isPlaying());
+  }, []);
 
-  const togglePlay = () => {
-    if (onPlayToggle) {
-      onPlayToggle();
-    } else {
-        // Fallback for independent use
-        if (wavesurfer.current) {
-            wavesurfer.current.playPause();
-            setIsPlayingLocal(wavesurfer.current.isPlaying());
-        }
-    }
+  const formatTime = (t) => {
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60);
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
-  const remainingTime = duration - currentTime;
+  const remaining = duration - currentTime;
 
   return (
-    <div className="waveform-player w-100 d-flex align-items-center gap-3">
-        <div className="play-button-container" onClick={togglePlay} style={{ cursor: 'pointer' }}>
-            <div className={`play-icon-circle ${isPlayingLocal ? 'playing' : ''}`}>
-                 {isPlayingLocal ? <FaPause size={20} /> : <FaPlay size={20} className="pl-1" />}
-            </div>
+    <div className="waveform-player d-flex align-items-center gap-3">
+      <div
+        className="play-button-container"
+        onClick={handlePlayPause}
+        style={{ cursor: "pointer" }}
+      >
+        <div className={`play-icon-circle ${isPlaying ? "playing" : ""}`}>
+          {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
         </div>
-        
-        <div className="flex-grow-1 overflow-hidden" style={{ minWidth: 0 }}>
-             <div className="d-flex justify-content-between align-items-center mb-1">
-                 <h5 className="mb-0 text-truncate fw-bold player-title" style={{ fontSize: '1rem', fontFamily: 'Marcellus' }}>{title}</h5>
-                 <span className="small opacity-75 fw-bold" style={{ fontFamily: 'monospace' }}>
-                    {formatTime(remainingTime > 0 ? remainingTime : 0)}
-                 </span>
-             </div>
-             <div ref={containerRef} className="waveform-container" />
+      </div>
+
+      <div className="flex-grow-1" style={{ minWidth: 0 }}>
+        <div className="d-flex justify-content-between align-items-center mb-1">
+          <h5 className="mb-0 text-truncate fw-bold">{title}</h5>
+          <span className="small opacity-75">
+            {formatTime(Math.max(remaining, 0))}
+          </span>
         </div>
+        <div
+          ref={containerRef}
+          className="waveform-container"
+          style={{ width: "100%" }}
+        />
+      </div>
     </div>
   );
 };

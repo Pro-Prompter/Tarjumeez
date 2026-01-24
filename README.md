@@ -2,7 +2,7 @@
 
 A professional, responsive portfolio website designed to showcase voice-over demos with an interactive audio experience. Built with React and WaveSurfer.js, this project emphasizes audio clarity, visual elegance, and seamless performance.
 
-![Portfolio Preview](./public/salahuddin-portfolio.png)
+![Portfolio Preview](./public/assets/images/salahuddin-portfolio.png)
 
 ## 🎙️ Features
 
@@ -47,7 +47,7 @@ Follow these steps to run the project locally.
 
 3.  **Start the development server**:
     ```bash
-    yarn start
+    yarn dev
     ```
 
     Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -78,4 +78,4 @@ This creates a `build` folder with static assets ready for deployment.
 
 ## 📄 License
 
-This project is open source and available under the [MIT Logic](LICENSE).
+This project is open source and available under the [MIT](LICENSE).
