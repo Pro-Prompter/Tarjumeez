@@ -8,7 +8,7 @@ import {
   worktimeline,
   skills,
   services,
-} from "../../content_option";
+} from "../../content_options";
 
 export const About = () => {
   return (

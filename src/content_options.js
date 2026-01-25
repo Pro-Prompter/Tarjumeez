@@ -4,7 +4,6 @@ const demoIVR = "/assets/audios/URDU IVR.mp3";
 const demoConversation = "/assets/audios/محادثة عادية.mp3";
 const demoRenan = "/assets/audios/Demo_Renan.mp3";
 const Image = "/assets/images/salahuddin.jpeg";
-
 const logotext = "Syed Salahuddin Ayubi";
 
 const meta = {
@@ -97,39 +96,29 @@ const dataportfolio = [
   {
     title: "Commercial Roleplay",
     description: "Engaging roleplay scenario for commercial advertisement.",
-    audio: demoRoleplay,
-    format: "wav",
-    language: "Urdu",
+    audio: demoRoleplay
   },
   {
     title: "Arabic Conversation",
     description:
       "Natural and conversational tone suitable for dialogue narrations.",
     audio: demoConversation,
-    format: "mp3",
-    language: "Arabic",
   },
   {
     title: "IVR System Recording",
     description:
       "Clear and professional voice for Interactive Voice Response systems.",
     audio: demoIVR,
-    format: "mp3",
-    language: "Urdu",
   },
   {
     title: "Corporate Demo (Renan)",
     description: "Polished corporate narration.",
     audio: demoRenan,
-    format: "wav",
-    language: "Urdu",
   },
   {
     title: "Audio Test (Talaat)",
     description: "Voice test sample showcasing vocal clarity.",
     audio: demoTalaat,
-    format: "mp3",
-    language: "Urdu",
   },
 ];
 

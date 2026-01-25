@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { dataportfolio, meta } from "../../content_option";
+import { dataportfolio, meta } from "../../content_options";
 import Player from "./Player";
 
 export const Portfolio = () => {
@@ -56,13 +56,13 @@ export const Portfolio = () => {
               <Col key={i} lg="6" md="12" className="mb-4">
                 <Card className="h-100 audio-card shadow-sm border-0">
                   <Card.Body className="d-flex flex-column justify-content-center">
-                      <Player
-                        audioUrl={data.audio}
-                        title={data.title}
-                        isPlaying={currentlyPlaying === i}
-                        onPlayToggle={() => handlePlayToggle(i)}
-                        theme={theme}
-                      />
+                    <Player
+                      audioUrl={data.audio}
+                      title={data.title}
+                      isPlaying={currentlyPlaying === i}
+                      onPlayToggle={() => handlePlayToggle(i)}
+                      theme={theme}
+                    />
                   </Card.Body>
                 </Card>
               </Col>
