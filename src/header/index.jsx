@@ -1,133 +1,71 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import { VscGrabber, VscClose } from "react-icons/vsc";
-import { Link } from "react-router-dom";
-import { logotext, socialprofiles } from "../content_options";
+import { logotext } from "../content_options";
 import Themetoggle from "../components/themetoggle";
 
+const NAV_LINKS = [
+  { label: "Home", href: "#home" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
 const Headermain = () => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
-
-  const handleToggle = () => {
-    setMenuOpen((prev) => !prev);
-    document.body.classList.toggle("ovhidden");
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-    document.body.classList.remove("ovhidden");
-  };
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
-    if (!isMenuOpen) return;
+    const sectionIds = ["home", "portfolio", "about", "contact"];
+    const visibleMap = {};
 
-    const handleEsc = (e) => {
-      if (e.key === "Escape") {
-        closeMenu();
-      }
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visibleMap[entry.target.id] = entry.isIntersecting;
+        });
 
-    document.addEventListener("keydown", handleEsc);
+        for (const id of sectionIds) {
+          if (visibleMap[id]) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      },
+      { threshold: 0.3 },
+    );
 
-    return () => {
-      document.removeEventListener("keydown", handleEsc);
-    };
-  }, [isMenuOpen]);
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
       <header className="fixed-top site__header">
         <div className="d-flex align-items-center justify-content-between">
-          <Link className="navbar-brand nav_ac" to="/" onClick={closeMenu}>
+          <a className="navbar-brand nav_ac" href="#home">
             {logotext}
-          </Link>
+          </a>
 
           <div className="d-flex align-items-center">
+            <nav className="header__nav" aria-label="Main navigation">
+              {NAV_LINKS.map(({ label, href }) => {
+                const isActive = activeSection === href.slice(1);
+                return (
+                  <a
+                    key={href}
+                    href={href}
+                    className={`header__nav-link${isActive ? " active" : ""}`}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    {label}
+                  </a>
+                );
+              })}
+            </nav>
             <Themetoggle />
-
-            <button
-              className="menu__button nav_ac"
-              onClick={handleToggle}
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-            >
-              {isMenuOpen ? <VscClose /> : <VscGrabber />}
-            </button>
-          </div>
-        </div>
-
-        <div className={`site__navigation ${isMenuOpen ? "menu__opend" : ""}`}>
-          <div className="bg__menu h-100">
-            <div className="menu__wrapper">
-              <div className="menu__container p-3">
-                <ul className="the_menu">
-                  <li className="menu_item">
-                    <Link to="/" className="my-3" onClick={closeMenu}>
-                      Home
-                    </Link>
-                  </li>
-                  <li className="menu_item">
-                    <Link to="/portfolio" className="my-3" onClick={closeMenu}>
-                      Portfolio
-                    </Link>
-                  </li>
-                  <li className="menu_item">
-                    <Link to="/about" className="my-3" onClick={closeMenu}>
-                      About
-                    </Link>
-                  </li>
-                  <li className="menu_item">
-                    <Link to="/contact" className="my-3" onClick={closeMenu}>
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div className="menu_footer d-flex flex-column flex-md-row justify-content-between align-items-md-center position-absolute w-100 p-3">
-            <div className="d-flex gap-3">
-              <a
-                href={socialprofiles.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fs-6 fs-md-5"
-              >
-                Facebook
-              </a>
-              <a
-                href={socialprofiles.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fs-6 fs-md-5"
-              >
-                Instagram
-              </a>
-              <a
-                href={socialprofiles.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fs-6 fs-md-5"
-              >
-                Twitter
-              </a>
-              <a
-                href={socialprofiles.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fs-6 fs-md-5"
-              >
-                LinkedIn
-              </a>
-            </div>
-
-            <address className="mail m-0 fs-6 fs-md-5 text-center text-md-start">
-              Get in Touch: <br className="d-none d-md-block" />
-              <a href="mailto:contact@salahuddin.com" className="fs-6 fs-md-5">
-                contact@salahuddin.com
-              </a>
-            </address>
           </div>
         </div>
       </header>

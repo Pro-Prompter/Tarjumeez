@@ -2,19 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-// IntersectionObserver hook
-function useInView(ref, options) {
+const OBSERVE_OPTIONS = { threshold: 0.3 };
+
+function useInView(ref) {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      options
+      OBSERVE_OPTIONS,
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref, options]);
+  }, [ref]);
 
   return inView;
 }
@@ -24,7 +25,7 @@ const Player = ({
   title,
   isPlaying,
   onPlayToggle,
-  theme = "light",
+  theme = "dark",
 }) => {
   const containerRef = useRef(null);
   const audioRef = useRef(null);
@@ -33,16 +34,9 @@ const Player = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const isInView = useInView(containerRef, { threshold: 0.3 });
+  const isInView = useInView(containerRef);
 
-  // Preload audio early
-  useEffect(() => {
-    const audio = new Audio(audioUrl);
-    audio.preload = "auto";
-    audio.load();
-  }, [audioUrl]);
-
-  // Initialize WaveSurfer ONCE when visible
+  // Initialize WaveSurfer once when visible
   useEffect(() => {
     if (!isInView || wavesurferRef.current || !audioRef.current) return;
 
@@ -68,7 +62,7 @@ const Player = ({
     });
 
     ws.on("finish", () => {
-      onPlayToggle(null);
+      onPlayToggle();
     });
 
     return () => {
@@ -76,6 +70,17 @@ const Player = ({
       wavesurferRef.current = null;
     };
   }, [isInView]);
+
+  // Update waveform colors when theme changes
+  useEffect(() => {
+    const ws = wavesurferRef.current;
+    if (!ws) return;
+    ws.setOptions({
+      waveColor: theme === "light" ? "#b0b0b0" : "#6c757d",
+      progressColor: theme === "light" ? "#1a1a1a" : "#ffffff",
+      cursorColor: theme === "light" ? "#1a1a1a" : "#ffffff",
+    });
+  }, [theme]);
 
   // Sync external play/pause state
   useEffect(() => {
@@ -89,9 +94,7 @@ const Player = ({
   const formatTime = (t) => {
     const m = Math.floor(t / 60);
     const s = Math.floor(t % 60);
-    return `${m.toString().padStart(2, "0")}:${s
-      .toString()
-      .padStart(2, "0")}`;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
   const remaining = duration - currentTime;
@@ -106,12 +109,14 @@ const Player = ({
       />
 
       <div className="waveform-player d-flex align-items-center gap-3">
-        <div
+        <button
           onClick={onPlayToggle}
-          style={{ cursor: "pointer" }}
+          className="player__play-btn"
+          aria-label={isPlaying ? "Pause" : "Play"}
+          type="button"
         >
           {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
-        </div>
+        </button>
 
         <div className="flex-grow-1" style={{ minWidth: 0 }}>
           <div className="d-flex justify-content-between align-items-center mb-1">
@@ -121,10 +126,7 @@ const Player = ({
             </span>
           </div>
 
-          <div
-            ref={containerRef}
-            className="waveform-container"
-          />
+          <div ref={containerRef} className="waveform-container" />
         </div>
       </div>
     </>

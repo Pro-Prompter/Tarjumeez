@@ -70,6 +70,16 @@
     padding-bottom: 4px;
 }
 
+.about__list {
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+.about__list li {
+    list-style-type: disc;
+    margin-bottom: 6px;
+}
+
 
 /*! CSS Used keyframes */
 

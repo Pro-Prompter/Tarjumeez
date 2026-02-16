@@ -1,8 +1,6 @@
 .audio-card {
     background: #1a1a1a;
-    /* Dark grey background for better contrast against black body */
     color: var(--secondary-color);
-    /* White text */
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -26,82 +24,25 @@
 .audio-card .card-text {
     font-family: 'Raleway', sans-serif;
     color: #cccccc !important;
-    /* Slightly dimmed white for description */
 }
 
 [data-theme="light"] .audio-card .card-text {
     color: #555555 !important;
 }
 
-/* Audio styles removed - using WaveSurfer */
-
-.pill-badge {
-    font-size: 0.7rem;
-    padding: 0.4em 0.8em;
-    border-radius: 50rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background-color: var(--text-color-3) !important;
-    /* Use the red accent color */
-    color: #fff;
-    font-weight: 600;
-}
-
-/* Ensure buttons match theme - Ghost Button Style */
-.btn-outline-primary {
+/* Player play/pause button */
+.player__play-btn {
+    background: none;
+    border: none;
+    padding: 0;
     color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    border-radius: 0;
-    /* Sharp corners for professional look */
-    font-family: 'Marcellus', serif;
-    transition: all 0.3s ease;
-}
-
-
-/* Waveform Player Styles */
-.play-icon-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
     display: flex;
-    justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
-    color: var(--secondary-color);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    justify-content: center;
+    transition: opacity 0.2s ease;
 }
 
-.play-icon-circle:hover {
-    background: var(--secondary-color);
-    color: var(--bg-color);
-    /* Inverted text color on hover */
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-.play-icon-circle.playing {
-    background: var(--secondary-color);
-    color: var(--bg-color);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-[data-theme="light"] .play-icon-circle {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-    color: var(--secondary-color);
-    /* In light mode secondary is black */
-}
-
-[data-theme="light"] .play-icon-circle:hover,
-[data-theme="light"] .play-icon-circle.playing {
-    background: var(--secondary-color);
-    /* Black */
-    color: #fff;
-    /* White icon */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.player-title {
-    letter-spacing: 0.5px;
+.player__play-btn:hover {
+    opacity: 0.7;
 }

@@ -1,3 +1,13 @@
+html {
+    scroll-behavior: smooth;
+}
+
+#portfolio,
+#about,
+#contact {
+    scroll-margin-top: 70px;
+}
+
 :root {
     --bg-color: #0c0c0c;
     --primary-color: #0d0d0d;
@@ -93,4 +103,49 @@ code {
 
 .color_sec {
     color: var(--secondary-color);
+}
+
+/* ── Scroll-reveal animations ── */
+.reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal--fade-up {
+    transform: translateY(40px);
+}
+
+.reveal--fade-down {
+    transform: translateY(-40px);
+}
+
+.reveal--fade-left {
+    transform: translateX(-40px);
+}
+
+.reveal--fade-right {
+    transform: translateX(40px);
+}
+
+.reveal--scale {
+    transform: scale(0.92);
+}
+
+.reveal--fade {
+    transform: none;
+}
+
+.reveal.revealed {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }

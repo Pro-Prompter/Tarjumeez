@@ -1,52 +1,28 @@
-import React, { useEffect, useRef } from "react";
-import { Route, Routes } from "react-router-dom";
-import withRouter from "../hooks/withRouter";
+import React from "react";
+import { Helmet } from "react-helmet-async";
 import { Home } from "../pages/home";
 import { Portfolio } from "../pages/portfolio";
-import { ContactUs } from "../pages/contact";
 import { About } from "../pages/about";
+import { ContactUs } from "../pages/contact";
 import { Socialicons } from "../components/socialicons";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-
-const AnimatedRoutes = withRouter(({ location }) => {
-  const pageRef = useRef(null);
-
-  useEffect(() => {
-    pageRef.current?.focus();
-  }, [location.pathname]);
-
-  return (
-    <TransitionGroup component={null}>
-      <CSSTransition
-        key={location.key}
-        timeout={400}
-        classNames="page"
-        unmountOnExit
-      >
-        <main
-          ref={pageRef}
-          tabIndex={-1}
-          role="main"
-          aria-live="polite"
-          className="page-wrapper"
-        >
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </main>
-      </CSSTransition>
-    </TransitionGroup>
-  );
-});
+import Footer from "../footer";
+import { meta } from "../content_options";
 
 function AppRoutes() {
   return (
     <div className="s_c">
-      <AnimatedRoutes />
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+      </Helmet>
+      <main role="main">
+        <Home />
+        <Portfolio />
+        <About />
+        <ContactUs />
+      </main>
+      <Footer />
       <Socialicons />
     </div>
   );

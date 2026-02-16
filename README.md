@@ -1,4 +1,4 @@
-# Syed Salahuddin Ayubi - Professional Voice Over Portfolio
+# Salahud Din - Professional Voice Over Portfolio
 
 A professional, responsive portfolio website designed to showcase voice-over demos with an interactive audio experience. Built with React and WaveSurfer.js, this project emphasizes audio clarity, visual elegance, and seamless performance.
 

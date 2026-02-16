@@ -4,16 +4,16 @@ const demoIVR = "/assets/audios/URDU IVR.mp3";
 const demoConversation = "/assets/audios/محادثة عادية.mp3";
 const demoRenan = "/assets/audios/Demo_Renan.mp3";
 const Image = "/assets/images/salahuddin.jpeg";
-const logotext = "Syed Salahuddin Ayubi";
+const logotext = "Salahud Din";
 
 const meta = {
-  title: "Syed Salahuddin Ayubi | Professional Voice Over Artist",
+  title: "Salahud Din | Professional Voice Over Artist",
   description:
-    "Syed Salahuddin Ayubi is a professional voice over artist with nearly two decades of experience, delivering broadcast-quality voice overs from a professional home studio in Swat, Pakistan.",
+    "Salahud Din is a professional voice over artist with nearly two decades of experience, delivering broadcast-quality voice overs from a professional home studio in Swat, Pakistan.",
 };
 
 const introdata = {
-  title: "I’m Syed Salahuddin Ayubi",
+  title: "I’m Salahud Din",
   animated: {
     first: "Pro Voice Over Artist",
     second: "Translator",
@@ -24,14 +24,46 @@ const introdata = {
 };
 
 const dataabout = {
-  title: "A bit about myself",
-  aboutme: `I’m a professional voice over artist with nearly two decades of experience,
-working from my own broadcast-quality home studio since 2004.
+  title: "A Bit About Myself",
+  aboutme: `I am a professional multilingual translator and localization specialist with hands-on experience delivering language solutions that are accurate, culturally natural, and purpose-driven.
 
-I provide clear, engaging, and versatile voice performances for commercials,
-documentaries, corporate videos, e-learning, audiobooks, and more.
-Clients value my fast turnaround times, consistent quality, and reliable
-professionalism.`,
+My core strength lies in working with Urdu, Pashto, Arabic, and English, where I do not simply translate words\u2014I transfer meaning, intent, and tone so the final content sounds native and professional.
+
+Over the past years, I have worked with international clients and a Chinese IT & telecom company, contributing not only as a translator but also as a linguistic QA and localization support professional. This means I understand language not just from a literary perspective, but from a real-world, functional, and business-critical angle.`,
+};
+
+const datadifferentiators = {
+  title: "What Makes Me Different",
+  intro: "Unlike many translators, I have direct exposure to:",
+  items: [
+    "App and IVR voice testing",
+    "Call inspections and pronunciation QA",
+    "Voice-over talent coordination",
+    "Operational and technical content localization",
+  ],
+  outro:
+    "This allows me to identify issues that others often miss\u2014such as unnatural phrasing, incorrect tone, regional mismatch, or voice-over delivery problems.",
+};
+
+const datavoexpertise = {
+  title: "Voice-Over & Localization Expertise",
+  intro:
+    "In addition to translation, I provide complete voice-over localization support in:",
+  languages: ["Urdu", "Pashto (Standard)", "Arabic (Saudi Fusha)"],
+  outro:
+    "From script adaptation to final QA, I ensure the output is clear, natural, and ready for real users.",
+};
+
+const dataphilosophy = {
+  title: "My Work Philosophy",
+  principles: [
+    "Precision over literal translation",
+    "Cultural relevance over robotic wording",
+    "Quality checks before delivery",
+    "Clear communication with clients",
+  ],
+  description:
+    "I take pride in being detail-oriented, reliable, and deadline-focused. Whether it\u2019s a short script or a large-scale localization project, I treat every assignment with the same level of professionalism.",
 };
 
 const worktimeline = [
@@ -124,7 +156,7 @@ const dataportfolio = [
 
 const contactConfig = {
   YOUR_EMAIL: "contact@salahuddin.com",
-  YOUR_FONE: "+92 342 2702536",
+  YOUR_FONE: "+92 343 5890171",
   description:
     "Looking for a professional voice over? Get in touch to discuss your project, request a demo, or receive a fast quote.",
   YOUR_SERVICE_ID: "service_id",
@@ -142,6 +174,9 @@ const socialprofiles = {
 export {
   meta,
   dataabout,
+  datadifferentiators,
+  datavoexpertise,
+  dataphilosophy,
   dataportfolio,
   worktimeline,
   skills,
