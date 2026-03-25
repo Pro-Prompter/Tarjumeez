@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.2.3",
-    "emailjs-com": "^3.2.0",
     "framer-motion": "^12.35.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
@@ -23,8 +23,8 @@
     "wavesurfer.js": "^7.12.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.2",
-    "vite": "^7.3.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.2",
     "vite-plugin-svgr": "^4.5.0"
   }
 }

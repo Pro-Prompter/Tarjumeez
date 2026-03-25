@@ -1,32 +1,50 @@
 import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
-  const [form, setForm] = useState({
+  const initialFormState = {
     first_name: "",
     last_name: "",
     email: "",
-    country: "us",
+    country: "pk",
     phone: "",
     company: "",
     project_details: "",
-  });
+  };
+
+  const [form, setForm] = useState(initialFormState);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Thank you! Your message has been received.");
-    setForm({
-      first_name: "",
-      last_name: "",
-      email: "",
-      country: "us",
-      phone: "",
-      company: "",
-      project_details: "",
-    });
+    setLoading(true);
+
+    const serviceID = "YOUR_SERVICE_ID";
+    const templateID = "YOUR_TEMPLATE_ID";
+    const publicKey = "YOUR_PUBLIC_KEY";
+
+    emailjs
+      .send(serviceID, templateID, form, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          alert("Thank you! Your message has been sent successfully.");
+          setForm(initialFormState);
+        },
+        (error) => {
+          console.error("EmailJS Error:", error);
+          alert("Oops! Something went wrong. Please try again.");
+        }
+      )
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -42,6 +60,7 @@ export default function Contact() {
       <h2 className="contact-heading">CONTACT</h2>
 
       <form className="contact-form" onSubmit={handleSubmit}>
+        {/* Row 1 */}
         <div className="contact-row">
           <div className="contact-field">
             <label className="contact-label">
@@ -56,6 +75,7 @@ export default function Contact() {
               required
             />
           </div>
+
           <div className="contact-field">
             <label className="contact-label">Last Name</label>
             <input
@@ -66,6 +86,7 @@ export default function Contact() {
               onChange={handleChange}
             />
           </div>
+
           <div className="contact-field">
             <label className="contact-label">
               Email <span className="req">*</span>
@@ -81,11 +102,13 @@ export default function Contact() {
           </div>
         </div>
 
+        {/* Row 2 */}
         <div className="contact-row">
           <div className="contact-field">
             <label className="contact-label">
               Country <span className="req">*</span>
             </label>
+
             <div className="contact-select-wrap">
               <select
                 className="contact-select"
@@ -101,6 +124,7 @@ export default function Contact() {
                 <option value="gb">United Kingdom</option>
                 <option value="other">Other</option>
               </select>
+
               <svg
                 className="contact-select-arrow"
                 viewBox="0 0 12 8"
@@ -116,6 +140,7 @@ export default function Contact() {
               </svg>
             </div>
           </div>
+
           <div className="contact-field">
             <label className="contact-label">Phone</label>
             <input
@@ -126,6 +151,7 @@ export default function Contact() {
               onChange={handleChange}
             />
           </div>
+
           <div className="contact-field">
             <label className="contact-label">Company</label>
             <input
@@ -138,11 +164,13 @@ export default function Contact() {
           </div>
         </div>
 
+        {/* Row 3 */}
         <div className="contact-row contact-row--full">
           <div className="contact-field contact-field--full">
             <label className="contact-label">
               Brief Project Details <span className="req">*</span>
             </label>
+
             <textarea
               className="contact-textarea"
               name="project_details"
@@ -155,8 +183,12 @@ export default function Contact() {
         </div>
 
         <div className="contact-submit-row">
-          <button className="contact-submit" type="submit">
-            SUBMIT
+          <button
+            className="contact-submit"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Sending..." : "SUBMIT"}
           </button>
         </div>
       </form>

@@ -1,5 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
 
 export default function Footer() {
   const location = useLocation();
@@ -14,27 +20,46 @@ export default function Footer() {
           <div className="footer-logo">
             <img
               src="/assets/images/Tarjumeez Voiceovers Logo.svg"
-              alt="Tarjumeeez Voiceovers"
+              alt="Tarjumeez Voiceovers"
               className="footer-logo-svg"
             />
           </div>
           <div className="footer-socials">
-            <a href="#" className="footer-social-btn" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-              </svg>
+            <a
+              href="https://www.facebook.com/salah.uddin.526438"
+              className="footer-social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <FaFacebookF />
             </a>
-            <a href="#" className="footer-social-btn" aria-label="LinkedIn">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
+            <a
+              href="https://www.instagram.com/salahud_din_s"
+              className="footer-social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <FaInstagram />
             </a>
-            <a href="#" className="footer-social-btn" aria-label="WeChat">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.5 3C5.36 3 2 5.92 2 9.5c0 1.95 1 3.7 2.6 4.9L4 17l2.8-1.4c.87.25 1.77.4 2.7.4.27 0 .53-.01.8-.03A5.6 5.6 0 0 1 10 14.5C10 11.46 13.13 9 17 9c.17 0 .34.01.5.02C16.7 5.57 13.42 3 9.5 3zm-1.75 3.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm3.5 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM17 10.5c-3.31 0-6 2.02-6 4.5s2.69 4.5 6 4.5c.73 0 1.42-.11 2.06-.3L22 21l-.54-2.4C22.44 17.6 23 16.1 23 14.5c0-2.48-2.69-4-6-4zm-1.5 2.25a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm3 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-              </svg>
+            <a
+              href="https://www.linkedin.com/in/salahud-din-53765286"
+              className="footer-social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin />
+            </a>
+            <a
+              href="https://x.com/Ayubi4Ssa"
+              className="footer-social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+            >
+              <FaTwitter />
             </a>
           </div>
         </div>
@@ -47,7 +72,14 @@ export default function Footer() {
             >
               contact@tarjumeez.com
             </a>
-            <span className="footer-contact-item">+92 342 2702536</span>
+            <a
+              href="https://wa.me/923422702536"
+              className="footer-contact-item"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              +92 342 2702536
+            </a>
             <span className="footer-contact-item">WeChat: salah2536</span>
           </div>
           <div className="footer-quicklinks-row">

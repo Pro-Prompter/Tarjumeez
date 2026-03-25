@@ -42,7 +42,11 @@ export default function Navbar({ variant = "hero" }) {
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         style={{ position: "sticky", top: 0, zIndex: 50 }}
       >
-        <Link to="/" className="nav-logo" style={{ textDecoration: "none", position: "relative", left: "auto" }}>
+        <Link
+          to="/"
+          className="nav-logo"
+          style={{ textDecoration: "none", position: "relative", left: "auto" }}
+        >
           <img
             src="/assets/images/Tarjumeez Voiceovers Logo.svg"
             alt="Tarjumeeez Voiceovers"
@@ -50,18 +54,34 @@ export default function Navbar({ variant = "hero" }) {
           />
         </Link>
         <ul className="nav-links">
-          <li><Link to="/">Home</Link></li>
-          <li className="pipe">|</li>
-          <li><Link to="/demos">Demo</Link></li>
-          <li className="pipe">|</li>
-          <li><Link to="/about">About</Link></li>
+          <li>
+            <a href="#about" onClick={close}>
+              About
+            </a>
+          </li>
           <li className="pipe">|</li>
           <li>
-            {isHome ? (
-              <a href="#contact" className="contact-link">Contact</a>
-            ) : (
-              <Link to="/#contact" className="contact-link">Contact</Link>
-            )}
+            <a href="#demo" onClick={close}>
+              Demo
+            </a>
+          </li>
+          <li className="pipe">|</li>
+          <li>
+            <a href="#clients" onClick={close}>
+              Clients
+            </a>
+          </li>
+          <li className="pipe">|</li>
+          <li>
+            <a href="#services" onClick={close}>
+              Services
+            </a>
+          </li>
+          <li className="pipe">|</li>
+          <li>
+            <a href="#contact" className="contact-link" onClick={close}>
+              Contact
+            </a>
           </li>
         </ul>
       </motion.header>
@@ -72,7 +92,12 @@ export default function Navbar({ variant = "hero" }) {
     <>
       {/* Hero navbar — absolute over hero image */}
       <nav className={`navbar${open ? " nav-open" : ""}`}>
-        <Link to="/" className="nav-logo" style={{ textDecoration: "none" }} onClick={close}>
+        <Link
+          to="/"
+          className="nav-logo"
+          style={{ textDecoration: "none" }}
+          onClick={close}
+        >
           <img
             src="/assets/images/Tarjumeez Voiceovers Logo.svg"
             alt="Tarjumeeez Voiceovers"
@@ -80,15 +105,35 @@ export default function Navbar({ variant = "hero" }) {
           />
         </Link>
         <ul className="nav-links">
-          <li><Link to="#about" onClick={close}>About</Link></li>
+          <li>
+            <Link to="#about" onClick={close}>
+              About
+            </Link>
+          </li>
           <li className="pipe">|</li>
-          <li><Link to="#demos" onClick={close}>Demo</Link></li>
+          <li>
+            <Link to="#demo" onClick={close}>
+              Demo
+            </Link>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#clients" onClick={close}>Clients</a></li>
+          <li>
+            <a href="#clients" onClick={close}>
+              Clients
+            </a>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#services" onClick={close}>Services</a></li>
+          <li>
+            <a href="#services" onClick={close}>
+              Services
+            </a>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#contact" className="contact-link" onClick={close}>Contact</a></li>
+          <li>
+            <a href="#contact" className="contact-link" onClick={close}>
+              Contact
+            </a>
+          </li>
         </ul>
         <button
           className="nav-hamburger"
@@ -109,7 +154,11 @@ export default function Navbar({ variant = "hero" }) {
         animate={{ y: pastHero && !hidden ? "0%" : "-100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        <Link to="/" className="nav-logo" style={{ textDecoration: "none", position: "relative", left: "auto" }}>
+        <Link
+          to="/"
+          className="nav-logo"
+          style={{ textDecoration: "none", position: "relative", left: "auto" }}
+        >
           <img
             src="/assets/images/Tarjumeez Voiceovers Logo.svg"
             alt="Tarjumeeez Voiceovers"
@@ -117,15 +166,27 @@ export default function Navbar({ variant = "hero" }) {
           />
         </Link>
         <ul className="nav-links">
-          <li><Link to="/about">About</Link></li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
           <li className="pipe">|</li>
-          <li><Link to="/demos">Demo</Link></li>
+          <li>
+            <a href="#demo">Demo</a>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#clients">Clients</a></li>
+          <li>
+            <a href="#clients">Clients</a>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#services">Services</a></li>
+          <li>
+            <a href="#services">Services</a>
+          </li>
           <li className="pipe">|</li>
-          <li><a href="#contact" className="contact-link">Contact</a></li>
+          <li>
+            <a href="#contact" className="contact-link">
+              Contact
+            </a>
+          </li>
         </ul>
       </motion.div>
     </>

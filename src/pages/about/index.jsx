@@ -49,7 +49,7 @@ export default function AboutPage() {
                 <strong>Languages</strong>
                 <ul>
                   <li>Urdu (native)</li>
-                  <li>Pashto (near-native)</li>
+                  <li>Pashto (native)</li>
                   <li>Arabic (professional)</li>
                   <li>English (fluent)</li>
                 </ul>

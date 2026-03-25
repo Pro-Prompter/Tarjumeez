@@ -1,35 +1,35 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import WaveSurfer from "wavesurfer.js";
 
-// Hook to prevent loading 50+ waveforms at once (Performance)
-function useInView(ref) {
+// Hook: Detect if element is in viewport
+function useInView(ref, threshold = 0.1) {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.1 } 
+      { threshold }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref]);
+  }, [ref, threshold]);
 
   return inView;
 }
 
-export default function WaveformPlayer({ url, label, title }) {
+export default function WaveformPlayer({ url, label }) {
   const containerRef = useRef(null);
   const wavesurferRef = useRef(null);
-  
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
   const isInView = useInView(containerRef);
 
+  // Initialize WaveSurfer only when in view
   useEffect(() => {
-    // Only initialize when the user actually scrolls to the player
     if (!isInView || wavesurferRef.current || !containerRef.current) return;
 
     let cancelled = false;
@@ -41,7 +41,7 @@ export default function WaveformPlayer({ url, label, title }) {
       cursorColor: "transparent",
       barWidth: 2,
       barGap: 2,
-      barRadius: 4,
+      barRadius: 2,
       height: 60,
       normalize: true,
       interact: true,
@@ -49,26 +49,41 @@ export default function WaveformPlayer({ url, label, title }) {
     });
 
     ws.load(url).catch((err) => {
-      if (err.name === "AbortError") return; // expected during cleanup
+      if (err.name === "AbortError") return;
       console.error(err);
     });
 
-    ws.on("ready", () => { if (!cancelled) setDuration(ws.getDuration()); });
-    ws.on("audioprocess", (time) => { if (!cancelled) setCurrentTime(time); });
-    ws.on("play", () => { if (!cancelled) setIsPlaying(true); });
-    ws.on("pause", () => { if (!cancelled) setIsPlaying(false); });
+    ws.on("ready", () => {
+      if (!cancelled) setDuration(ws.getDuration());
+    });
+
+    ws.on("audioprocess", (time) => {
+      if (!cancelled) setCurrentTime(time);
+    });
+
+    ws.on("play", () => {
+      if (!cancelled) setIsPlaying(true);
+    });
+
+    ws.on("pause", () => {
+      if (!cancelled) setIsPlaying(false);
+    });
+
     ws.on("finish", () => {
-      if (cancelled) return;
-      setIsPlaying(false);
-      ws.seekTo(0);
+      if (!cancelled) {
+        setIsPlaying(false);
+        ws.seekTo(0);
+      }
     });
 
     wavesurferRef.current = ws;
 
     return () => {
       cancelled = true;
-      try { ws.destroy(); } catch { /* absorb AbortError during teardown */ }
-      wavesurferRef.current = null;
+      if (wavesurferRef.current) {
+        wavesurferRef.current.destroy();
+        wavesurferRef.current = null;
+      }
     };
   }, [url, isInView]);
 
@@ -83,20 +98,20 @@ export default function WaveformPlayer({ url, label, title }) {
   };
 
   return (
-    <div className="demos-player" style={{ marginBottom: '1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-        <span className="demos-player-label" style={{ fontWeight: 700 }}>{label || title}</span>
-        <span style={{ fontSize: '0.82rem', color: '#888' }}>
+    <div className="demos-player" style={{ marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+        <span className="demos-player-label" style={{ fontWeight: 700 }}>{label}</span>
+        <span style={{ fontSize: "0.82rem", color: "#888" }}>
           {formatTime(currentTime)} / {formatTime(duration)}
         </span>
       </div>
 
-      <div className="demos-player-inner">
+      <div className="demos-player-inner" style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <button
           className={`demos-toggle-btn${isPlaying ? " playing" : ""}`}
           onClick={handleToggle}
           type="button"
-          style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+          style={{ border: "none", background: "none", cursor: "pointer" }}
         >
           {isPlaying ? (
             <svg width="22" height="26" viewBox="0 0 22 26">
@@ -110,7 +125,7 @@ export default function WaveformPlayer({ url, label, title }) {
           )}
         </button>
 
-        <div style={{ flex: 1, cursor: "pointer", minWidth: 0 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div ref={containerRef} />
         </div>
       </div>
