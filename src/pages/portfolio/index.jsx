@@ -1,74 +1,74 @@
-import React, { useRef, useState, useEffect } from "react";
-import "./style.css";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import { dataportfolio } from "../../content_options";
-import Player from "./Player";
-import ScrollReveal from "../../components/scrollreveal";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Navbar from "../../header";
+import WaveformPlayer from "./WaveformPlayer";
 
-export const Portfolio = () => {
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
-  const [theme, setTheme] = useState("dark"); // Default to dark
+const DEMO_PLAYERS = [
+  { src: "/assets/audios/Demo_Renan.mp3", label: "Demo Renan" },
+  { src: "/assets/audios/Roleplay (Urdu).mp3", label: "Roleplay (Urdu)" },
+  { src: "/assets/audios/Talaat Audio Test.mp3", label: "Talaat Audio Test" },
+  { src: "/assets/audios/URDU IVR.mp3", label: "URDU IVR" },
+  { src: "/assets/audios/محادثة عادية.mp3", label: "\u0645\u062D\u0627\u062F\u062B\u0629 \u0639\u0627\u062F\u064A\u0629" },
+  { src: "/assets/audios/demo1.wav", label: "Demo 1" },
+  { src: "/assets/audios/demo2.wav", label: "Demo 2" },
+];
 
+const fadeIn = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true },
+  transition: { duration: 0.6 },
+};
+
+const scaleDivider = {
+  initial: { scaleX: 0 },
+  whileInView: { scaleX: 1 },
+  viewport: { once: true },
+  transition: { duration: 0.6 },
+};
+
+export default function DemosPage() {
   useEffect(() => {
-    // Initial check
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    setTheme(currentTheme);
-
-    // Observer for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          setTheme(document.documentElement.getAttribute('data-theme'));
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => observer.disconnect();
+    document.body.classList.add("page-demos");
+    return () => document.body.classList.remove("page-demos");
   }, []);
 
-  const handlePlayToggle = (index) => {
-    if (currentlyPlaying === index) {
-      setCurrentlyPlaying(null); // Pause if clicking same
-    } else {
-      setCurrentlyPlaying(index); // Play new
-    }
-  };
+  const rows = [];
+  for (let i = 0; i < DEMO_PLAYERS.length; i += 2) {
+    rows.push(DEMO_PLAYERS.slice(i, i + 2));
+  }
 
   return (
-    <section id="portfolio">
-      <Container className="About-header">
-        <ScrollReveal animation="fade-up">
-          <Row className="mb-5 mt-3 pt-md-3">
-            <Col lg="8">
-              <h1 className="display-4 mb-4"> Voice Demos </h1>
-              <hr className="t_border my-4 ml-0 text-left" />
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <Row className="mb-5 justify-content-center">
-          {dataportfolio.map((data, i) => {
-            return (
-              <Col key={i} lg="6" md="12" className="mb-4">
-                <ScrollReveal animation="fade-up" delay={i * 120}>
-                  <Card className="h-100 audio-card shadow-sm border-0">
-                    <Card.Body className="d-flex flex-column justify-content-center">
-                      <Player
-                        audioUrl={data.audio}
-                        title={data.title}
-                        isPlaying={currentlyPlaying === i}
-                        onPlayToggle={() => handlePlayToggle(i)}
-                        theme={theme}
-                      />
-                    </Card.Body>
-                  </Card>
-                </ScrollReveal>
-              </Col>
-            );
-          })}
-        </Row>
-      </Container>
-    </section>
+    <>
+      <Navbar variant="simple" />
+
+      <main style={{ padding: "90px 40px 120px", textAlign: "center" }}>
+        <section id="demos-full" className="demos-section">
+          <motion.h1 className="demos-heading" {...fadeIn}>Portfolio</motion.h1>
+
+          <div className="demos-grid" style={{ maxWidth: "920px", margin: "0 auto" }}>
+            {rows.map((row, ri) => (
+              <React.Fragment key={ri}>
+                {ri > 0 && <motion.hr className="demos-divider" {...scaleDivider} style={{ transformOrigin: "center" }} />}
+                <div className="demos-row">
+                  {row.map((demo, ci) => (
+                    <WaveformPlayer
+                      key={ri * 2 + ci}
+                      url={demo.src}
+                      label={demo.label}
+                    />
+                  ))}
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+
+          <div className="demos-btn-wrap" style={{ marginTop: "32px" }}>
+            <div className="demos-btn-underline"></div>
+          </div>
+        </section>
+      </main>
+    </>
   );
-};
+}

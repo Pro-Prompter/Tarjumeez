@@ -1,160 +1,76 @@
 import React from "react";
-import "./style.css";
-import { Container, Row, Col } from "react-bootstrap";
-import {
-  dataabout,
-  datadifferentiators,
-  datavoexpertise,
-  dataphilosophy,
-  worktimeline,
-  skills,
-  services,
-} from "../../content_options";
-import ScrollReveal from "../../components/scrollreveal";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Navbar from "../../header";
 
-export const About = () => {
-  return (
-    <section id="about">
-      <Container className="About-header">
-        <ScrollReveal animation="fade-up">
-          <Row className="mb-5 mt-3 pt-md-3">
-            <Col lg="8">
-              <h1 className="display-4 mb-4">About Me</h1>
-              <hr className="t_border my-4 ml-0 text-left" />
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">{dataabout.title}</h3>
-            </Col>
-            <Col lg="7" className="d-flex align-items-center">
-              <div>
-                <p>{dataabout.aboutme}</p>
-              </div>
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">{datadifferentiators.title}</h3>
-            </Col>
-            <Col lg="7" className="d-flex align-items-center">
-              <div>
-                <p>{datadifferentiators.intro}</p>
-                <ul className="about__list">
-                  {datadifferentiators.items.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-                <p>{datadifferentiators.outro}</p>
-              </div>
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">{datavoexpertise.title}</h3>
-            </Col>
-            <Col lg="7" className="d-flex align-items-center">
-              <div>
-                <p>{datavoexpertise.intro}</p>
-                <ul className="about__list">
-                  {datavoexpertise.languages.map((lang, i) => (
-                    <li key={i}>{lang}</li>
-                  ))}
-                </ul>
-                <p>{datavoexpertise.outro}</p>
-              </div>
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">{dataphilosophy.title}</h3>
-            </Col>
-            <Col lg="7" className="d-flex align-items-center">
-              <div>
-                <ul className="about__list">
-                  {dataphilosophy.principles.map((principle, i) => (
-                    <li key={i}>{principle}</li>
-                  ))}
-                </ul>
-                <p>{dataphilosophy.description}</p>
-              </div>
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className=" sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">Work Timeline</h3>
-            </Col>
-            <Col lg="7">
-              <table className="table caption-top">
-                <tbody>
-                  {worktimeline.map((data, i) => {
-                    return (
-                      <tr key={i}>
-                        <th scope="row">{data.jobtitle}</th>
-                        <td>{data.where}</td>
-                        <td>{data.date}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">Skills</h3>
-            </Col>
-            <Col lg="7">
-              {skills.map((data, i) => {
-                return (
-                  <div key={i}>
-                    <h3 className="progress-title">{data.name}</h3>
-                    <div className="progress">
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: `${data.value}%`,
-                        }}
-                      >
-                        <div className="progress-value">{data.value}%</div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </Col>
-          </Row>
-        </ScrollReveal>
-        <ScrollReveal animation="fade-up">
-          <Row className="sec_sp">
-            <Col lg="5">
-              <h3 className="color_sec py-4">Services</h3>
-            </Col>
-            <Col lg="7">
-              {services.map((data, i) => {
-                return (
-                  <div className="service_ py-4" key={i}>
-                    <h5 className="service__title">{data.title}</h5>
-                    <p className="service_desc">{data.description}</p>
-                  </div>
-                );
-              })}
-            </Col>
-          </Row>
-        </ScrollReveal>
-      </Container>
-    </section>
-  );
+const fadeIn = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true },
+  transition: { duration: 0.6 },
 };
+
+const slideUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6 },
+};
+
+export default function AboutPage() {
+  return (
+    <>
+      <Navbar variant="simple" />
+
+      <main>
+        <motion.h1 className="page-heading" {...fadeIn}>ABOUT</motion.h1>
+        <section className="about-section about-me-section">
+          <div className="page-container about-body">
+            <motion.h2 {...fadeIn}>Professional Profile</motion.h2>
+            <motion.p {...slideUp}>
+              Dr. Salahud Din is a multilingual voice artist and language specialist with over 12 years of experience in broadcast and commercial narration, audiobook performance, e-learning narration, and translation/localization services. He holds advanced training in vocal technique, diction, and studio production workflows.
+            </motion.p>
+
+            <motion.h3 {...fadeIn}>Core strengths</motion.h3>
+            <motion.ul {...slideUp}>
+              <li>Clear, authoritative delivery for narration &amp; documentary work</li>
+              <li>Warm, friendly commercial reads optimized for radio and digital ads</li>
+              <li>Experienced in Arabic, Urdu, Pashto and English — accurate accents and cultural nuance</li>
+              <li>Home studio capable of delivering broadcast-ready files (48kHz / 24-bit)</li>
+            </motion.ul>
+
+            <motion.h3 style={{ marginTop: "18px" }} {...fadeIn}>How I work</motion.h3>
+            <motion.p {...slideUp}>
+              I provide clear project timelines, sample reads on request, and professional post-production (noise reduction, normalization, and delivery in required formats). Revisions and direction are handled collaboratively until the final mix meets client objectives.
+            </motion.p>
+
+            <div style={{ display: "flex", gap: "28px", marginTop: "18px", flexWrap: "wrap" }}>
+              <motion.div style={{ flex: 1, minWidth: "220px" }} {...slideUp}>
+                <strong>Languages</strong>
+                <ul>
+                  <li>Urdu (native)</li>
+                  <li>Pashto (near-native)</li>
+                  <li>Arabic (professional)</li>
+                  <li>English (fluent)</li>
+                </ul>
+              </motion.div>
+              <motion.div style={{ flex: 1, minWidth: "220px" }} {...slideUp} transition={{ duration: 0.6, delay: 0.15 }}>
+                <strong>Studio / Deliverables</strong>
+                <ul>
+                  <li>Quiet home studio, condenser mic</li>
+                  <li>Deliver WAV/MP3, 48kHz/24-bit, duplicates, dry/wet versions</li>
+                  <li>Optional editing &amp; mastering</li>
+                </ul>
+              </motion.div>
+            </div>
+
+            <div style={{ marginTop: "26px" }}>
+              <Link className="about-more-btn" to="/#contact">Request a quote</Link>
+            </div>
+          </div>
+        </section>
+        <div className="page-bottom-bar" aria-hidden="true"></div>
+      </main>
+    </>
+  );
+}

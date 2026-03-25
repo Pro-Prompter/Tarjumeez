@@ -1,81 +1,133 @@
-import React, { useState, useEffect } from "react";
-import "./style.css";
-import { logotext } from "../content_options";
-import Themetoggle from "../components/themetoggle";
+import React, { useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 
-const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
+const HERO_HEIGHT = 500;
 
-const Headermain = () => {
-  const [activeSection, setActiveSection] = useState("home");
+export default function Navbar({ variant = "hero" }) {
+  const [open, setOpen] = useState(false);
+  const isSimple = variant === "simple";
+  const [hidden, setHidden] = useState(!isSimple);
+  const [pastHero, setPastHero] = useState(isSimple);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  const { scrollY } = useScroll();
+  const lastScrollY = useRef(0);
 
-  useEffect(() => {
-    const sectionIds = ["home", "portfolio", "about", "contact"];
-    const visibleMap = {};
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = lastScrollY.current;
+    lastScrollY.current = latest;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          visibleMap[entry.target.id] = entry.isIntersecting;
-        });
+    const isPastHero = variant === "simple" || latest > HERO_HEIGHT;
+    setPastHero(isPastHero);
 
-        for (const id of sectionIds) {
-          if (visibleMap[id]) {
-            setActiveSection(id);
-            break;
-          }
-        }
-      },
-      { threshold: 0.3 },
+    if (!isPastHero) {
+      setHidden(true);
+    } else if (latest > previous && latest > 120) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
+  const toggle = () => setOpen((v) => !v);
+  const close = () => setOpen(false);
+
+  if (variant === "simple") {
+    return (
+      <motion.header
+        className="simple-header"
+        initial={{ y: 0 }}
+        animate={{ y: hidden ? "-100%" : "0%" }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        style={{ position: "sticky", top: 0, zIndex: 50 }}
+      >
+        <Link to="/" className="nav-logo" style={{ textDecoration: "none", position: "relative", left: "auto" }}>
+          <img
+            src="/assets/images/Tarjumeez Voiceovers Logo.svg"
+            alt="Tarjumeeez Voiceovers"
+            className="nav-logo-svg"
+          />
+        </Link>
+        <ul className="nav-links">
+          <li><Link to="/">Home</Link></li>
+          <li className="pipe">|</li>
+          <li><Link to="/demos">Demo</Link></li>
+          <li className="pipe">|</li>
+          <li><Link to="/about">About</Link></li>
+          <li className="pipe">|</li>
+          <li>
+            {isHome ? (
+              <a href="#contact" className="contact-link">Contact</a>
+            ) : (
+              <Link to="/#contact" className="contact-link">Contact</Link>
+            )}
+          </li>
+        </ul>
+      </motion.header>
     );
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  }
 
   return (
     <>
-      <header className="fixed-top site__header">
-        <div className="d-flex align-items-center justify-content-between">
-          <a className="navbar-brand nav_ac" href="#home">
-            {logotext}
-          </a>
+      {/* Hero navbar — absolute over hero image */}
+      <nav className={`navbar${open ? " nav-open" : ""}`}>
+        <Link to="/" className="nav-logo" style={{ textDecoration: "none" }} onClick={close}>
+          <img
+            src="/assets/images/Tarjumeez Voiceovers Logo.svg"
+            alt="Tarjumeeez Voiceovers"
+            className="nav-logo-svg nav-logo-svg--hero"
+          />
+        </Link>
+        <ul className="nav-links">
+          <li><Link to="#about" onClick={close}>About</Link></li>
+          <li className="pipe">|</li>
+          <li><Link to="#demos" onClick={close}>Demo</Link></li>
+          <li className="pipe">|</li>
+          <li><a href="#clients" onClick={close}>Clients</a></li>
+          <li className="pipe">|</li>
+          <li><a href="#services" onClick={close}>Services</a></li>
+          <li className="pipe">|</li>
+          <li><a href="#contact" className="contact-link" onClick={close}>Contact</a></li>
+        </ul>
+        <button
+          className="nav-hamburger"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={toggle}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
 
-          <div className="d-flex align-items-center">
-            <nav className="header__nav" aria-label="Main navigation">
-              {NAV_LINKS.map(({ label, href }) => {
-                const isActive = activeSection === href.slice(1);
-                return (
-                  <a
-                    key={href}
-                    href={href}
-                    className={`header__nav-link${isActive ? " active" : ""}`}
-                    aria-current={isActive ? "true" : undefined}
-                  >
-                    {label}
-                  </a>
-                );
-              })}
-            </nav>
-            <Themetoggle />
-          </div>
-        </div>
-      </header>
-
-      <div className="br-top"></div>
-      <div className="br-bottom"></div>
-      <div className="br-left"></div>
-      <div className="br-right"></div>
+      {/* Sticky header — appears only after scrolling past hero */}
+      <motion.div
+        className="sticky-header"
+        initial={{ y: "-100%" }}
+        animate={{ y: pastHero && !hidden ? "0%" : "-100%" }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <Link to="/" className="nav-logo" style={{ textDecoration: "none", position: "relative", left: "auto" }}>
+          <img
+            src="/assets/images/Tarjumeez Voiceovers Logo.svg"
+            alt="Tarjumeeez Voiceovers"
+            className="nav-logo-svg"
+          />
+        </Link>
+        <ul className="nav-links">
+          <li><Link to="/about">About</Link></li>
+          <li className="pipe">|</li>
+          <li><Link to="/demos">Demo</Link></li>
+          <li className="pipe">|</li>
+          <li><a href="#clients">Clients</a></li>
+          <li className="pipe">|</li>
+          <li><a href="#services">Services</a></li>
+          <li className="pipe">|</li>
+          <li><a href="#contact" className="contact-link">Contact</a></li>
+        </ul>
+      </motion.div>
     </>
   );
-};
-
-export default Headermain;
+}
